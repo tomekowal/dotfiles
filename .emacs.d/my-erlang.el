@@ -10,12 +10,12 @@
       (setq exec-path (cons "/usr/local/lib/erlang/bin" exec-path))
       (require 'erlang-start)))
 
-(if (system-type-is-gnu)
+(if (system-type-is-darwin)
     (progn
-      (setq load-path (cons  "/usr/lib/erlang/lib/tools-2.6.6.1/emacs"
+      (setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.6.6/emacs"
                              load-path))
-      (setq erlang-root-dir "/usr/local/lib/erlang")
-      (setq exec-path (cons "/usr/local/lib/erlang/bin" exec-path))
+      (setq erlang-root-dir "/opt/local/lib/erlang")
+      (setq exec-path (cons "/opt/local/lib/erlang/bin" exec-path))
       (require 'erlang-start)))
 
 (provide 'my-erlang)

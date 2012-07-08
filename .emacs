@@ -21,8 +21,7 @@
 (require 'my-yasnippet)
 ;;(require 'my-slime)
 (require 'my-erlang)
-;;(require 'my-cedet)
+(require 'my-cedet)
 (require 'my-distel)
 (require 'my-haskell)
 (require 'linum)
-

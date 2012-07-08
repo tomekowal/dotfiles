@@ -3,8 +3,8 @@
 ;(setq debug-on-error t)
 
 ;; Load paths
-(add-to-list 'load-path (expand-file-name "~/emacs.d"))
-(add-to-list 'load-path (expand-file-name "~/emacs.d/3rd"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/3rd"))
 
 ;; Personal customizations
 (require 'my-system)
@@ -19,7 +19,7 @@
 ;;(require 'my-org)
 (require 'my-orgmode)
 (require 'my-yasnippet)
-(require 'my-slime)
+;;(require 'my-slime)
 (require 'my-erlang)
 (require 'my-cedet)
 (require 'my-distel)

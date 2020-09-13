@@ -1,0 +1,30 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Tomasz Kowal
+	email = tomasz.kowal@clubcollect.com
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[pager]
+       diff = diff-so-fancy | less --tabs=1,5 -RFX
+       show = diff-so-fancy | less --tabs=1,5 -RFX
+
+[core]
+	excludesfile = ~/.gitignore
+	autocrlf = false
+[pull]
+	rebase = true
+[rerere]
+	enabled = true
+[diff]
+	noprefix = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[merge]
+	conflictstyle = diff3

@@ -1,0 +1,8 @@
+.elixir_ls/
+.iex.exs
+.envrc
+.dir-locals.el
+todo.org
+.DS_Store
+.tern-port
+.#*

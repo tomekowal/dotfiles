@@ -1,24 +1,47 @@
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/tomaszkowal/.oh-my-zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="bira"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/home/tomaszkowal/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+POWERLEVEL9K_CUSTOM_AWS_VAULT="echo $AWS_VAULT"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -39,21 +62,36 @@ ZSH_THEME="bira"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    git
+    asdf
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    tmux
+    tmuxinator
+    zsh-aws-vault
+    nix-shell
+)
+
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-source $ZSH/oh-my-zsh.sh
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -68,9 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -79,42 +114,53 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias mps="pg_ctl start -D /usr/local/var/postgresql@9.6 ; iex -S mix phx.server"
-alias prune="git fetch --prune && git branch --merged master | grep -vE '(develop|master)$' | xargs git branch -d"
-alias ping='prettyping --nolegend'
-alias format="git ls-files --modified --others --exclude-standard | xargs mix format"
-alias rebase="git fetch && git rebase develop && git push --force-with-lease"
-alias wttr='curl "wttr.in/?format=v2"'
-alias e='emacsclient'
+alias mps="iex -S mix phx.server"
+alias tls="tmux list-sessions"
+alias e="emacsclient"
 
-# configure direnv
+# direnv config https://direnv.net/docs/hook.html
 eval "$(direnv hook zsh)"
 
-# load iterm goodies only for iterm (they break other shells) and when the file is in place
-[ "$TERM_PROGRAM" = "iTerm.app" ] && test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-# don't display right prompt in emacs (it messes up cursor)
-[ "$TERM" = "eterm-color" ] && unset RPS1
+# make time output more like in bash
+# https://unix.stackexchange.com/questions/562650/time-command-is-different-in-zsh-than-in-bash
+export TIMEFMT=$'%J\nreal\t%E\nuser\t%U\nsys\t%S'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# make vim the editor for git
+export EDITOR=vim
 
-man() {
-    env \
-        LESS_TERMCAP_mb=$'\e[1;31m' \
-        LESS_TERMCAP_md=$'\e[1;31m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[1;44;33m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[1;32m' \
-            man "$@"
+# Emacs GUI workaround
+# https://elementaryos.stackexchange.com/a/833/24567
+alias emacs='emacs -nw'
+
+# default system lang is polish
+export LANG=en_US.UTF-8
+
+# fuck hook
+eval $(thefuck --alias)
+
+# pip3 installs stuff here
+export PATH=$PATH:~/.local/bin
+
+
+# elixir-ls path
+export PATH=$PATH:~/elixir-lsp/elixir-ls/release
+
+# prettyping
+alias ping="prettyping --nolegend"
+alias prune='git checkout -q master && git for-each-ref refs/heads/ "--format=%(refname:short)" | while read branch; do mergeBase=$(git merge-base master $branch) && [[ $(git cherry master $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == "-"* ]] && git branch -D $branch; done'
+alias ta="tmux a -t"
+alias k=kubectl
+complete -F __start_kubectl k
+ 
+function with() {
+  ENV=$1
+  kubectx $ENV
+  shift
+  aws-vault exec "$ENV-su" -- $@
 }
 
-eclw () {
-    nohup /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -c $@ > /tmp/nohup_emacs.out &
-}
+# From installing rust
+. "$HOME/.cargo/env"
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-. $HOME/.asdf/completions/asdf.bash
-eval "$(thefuck --alias)"
-
-source /Users/tomaszkowal/Library/Preferences/org.dystroy.broot/launcher/bash/br
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

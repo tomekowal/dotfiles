@@ -117,6 +117,9 @@ source $ZSH/oh-my-zsh.sh
 alias mps="iex -S mix phx.server"
 alias tls="tmux list-sessions"
 alias e="emacsclient"
+alias rpk="docker exec -ti redpanda-1 rpk"
+alias mux="tmuxinator"
+alias b="cd ~/bluecodecom"
 
 # direnv config https://direnv.net/docs/hook.html
 eval "$(direnv hook zsh)"
@@ -154,13 +157,20 @@ complete -F __start_kubectl k
  
 function with() {
   ENV=$1
+  # remove suffix matching -*
+  ORG=${ENV%-*}
+  # remove prefix matching *-
+  TIER=${ENV#*-}
   kubectx $ENV
   shift
-  aws-vault exec "$ENV-su" -- $@
+  aws-vault exec "$ORG-clearing-$TIER" -- $@
 }
 
 # From installing rust
 . "$HOME/.cargo/env"
+
+# 1password completion
+eval "$(op completion zsh)"; compdef _op op
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

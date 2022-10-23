@@ -32,6 +32,11 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
+   ;; ----------------------------------------------------------------
+   ;; Example of useful layers you may want to use right away.
+   ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+   ;; `M-m f e R' (Emacs style) to install them.
+   ;; ----------------------------------------------------------------
    '(graphviz
      python
      haskell
@@ -44,11 +49,6 @@ This function should only modify configuration layer settings."
      html
      erlang
      sql
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      (elixir :variables elixir-backend 'lsp elixir-ls-path "/home/tomaszkowal/elixir-lsp/elixir-ls/release/")
      major-modes
      (ruby :variables ruby-backend 'robe)
@@ -83,7 +83,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(direnv exunit xclip tree-sitter tree-sitter-langs dracula-theme)
+   dotspacemacs-additional-packages '(direnv exunit xclip tree-sitter tree-sitter-langs tree-sitter-indent dracula-theme)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -645,7 +645,10 @@ before packages are loaded."
     :ensure t
     :after tree-sitter
     :config
-    (add-to-list 'tree-sitter-major-mode-language-alist '(elixir-mode . elixir)))
+    (add-to-list 'tree-sitter-major-mode-language-alist '(gleam-mode . gleam)))
+
+  (use-package gleam-mode
+    :load-path "~/experiments/gleam-mode")
 
   ;; from https://www.reddit.com/r/emacs/comments/4ykg7s/creating_and_using_bookmarks/
   (setq helm-bookmark-show-location t)
@@ -681,6 +684,16 @@ before packages are loaded."
   ;; enable copying and pasting from system clipboard
   (xclip-mode 1)
   (setq browse-url-browser-function 'browse-url-firefox)
+
+  (use-package lsp-mode
+    :commands lsp
+    :ensure t
+    :diminish lsp-mode
+    :hook
+    (elixir-mode . lsp)
+    :init
+    (add-to-list 'exec-path "/home/tomaszkowal/elixir-lsp/elixir-ls/release/"))
+  
 
   ;; lsp don't watch downloaded or generated files
   ;; we need to escape \ in string and in regex so \\ means "escape next character in regex" and \\\\ means literal backslash
@@ -747,6 +760,7 @@ before packages are loaded."
       "tk" 'exunit-rerun
       "tt" 'exunit-verify-single
       "tr" 'exunit-rerun
+      "tj" 'exunit-toggle-file-and-test-other-window
       "Tl" 'lsp-lens-mode))
 
   ;; enable folding for exunit compilation buffer
@@ -797,7 +811,8 @@ This function is called at the very end of Spacemacs initialization."
  '(package-selected-packages
    '(graphviz-dot-mode yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode pydoc py-isort poetry pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-cscope xcscope cython-mode company-anaconda blacken anaconda-mode pythonic typescript-mode string-edit npm-mode multi-line shut-up yaml-mode emacsql-sqlite3 org-roam csv-mode tern nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl toml-mode ron-mode racer flycheck-rust cargo rust-mode psci purescript-mode psc-ide web-mode web-beautify tagedit slim-mode scss-mode sass-mode pug-mode prettier-js impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode counsel-css company-web web-completion-data add-node-modules-path erlang sqlup-mode sql-indent ob-elixir helm-gtags ggtags flycheck-credo dap-mode posframe lsp-treemacs bui lsp-mode markdown-mode dash-functional counsel-gtags counsel swiper ivy alchemist company elixir-mode ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-easymotion evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(safe-local-variable-values
-   '((eval progn
+   '((allout-layout . t)
+     (eval progn
            (pp-buffer)
            (indent-buffer))
      (javascript-backend . tide)

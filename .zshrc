@@ -115,6 +115,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias mps="iex -S mix phx.server"
+alias mpss="MIX_ENV=systemtest iex -S mix phx.server"
 alias tls="tmux list-sessions"
 alias e="emacsclient"
 alias rpk="docker exec -ti redpanda-1 rpk"

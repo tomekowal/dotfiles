@@ -37,7 +37,8 @@ This function should only modify configuration layer settings."
    ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
    ;; `M-m f e R' (Emacs style) to install them.
    ;; ----------------------------------------------------------------
-   '(graphviz
+   '(eaf
+     graphviz
      python
      haskell
      typescript
@@ -59,7 +60,7 @@ This function should only modify configuration layer settings."
      helm
      lsp
      dap
-     markdown
+     (markdown :variables markdown-live-preview-engine 'vmd)
      multiple-cursors
      (org :variables
           org-enable-roam-support t
@@ -83,7 +84,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(direnv exunit xclip tree-sitter tree-sitter-langs tree-sitter-indent dracula-theme)
+   dotspacemacs-additional-packages '(direnv exunit xclip tree-sitter tree-sitter-langs tree-sitter-indent dracula-theme mermaid-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()

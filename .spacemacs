@@ -74,6 +74,7 @@ This function should only modify configuration layer settings."
      syntax-checking
      version-control
      treemacs
+     tree-sitter
      )
 
    ;; List of additional packages that will be installed without being wrapped
@@ -84,7 +85,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(direnv exunit xclip tree-sitter tree-sitter-langs tree-sitter-indent dracula-theme mermaid-mode)
+   dotspacemacs-additional-packages '(direnv exunit xclip dracula-theme mermaid-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -603,53 +604,6 @@ before packages are loaded."
 	
   (defun org-current-is-todo ()
     (string= "TODO" (org-get-todo-state)))
-
-
-
-  ;; tree-sitter config from https://gist.github.com/ananthakumaran/ed91ef5a7bbf679cdf13e8a65ea54abe
-  (defface tree-sitter-hl-face:warning
-    '((default :inherit font-lock-warning-face))
-    "Face for parser errors"
-    :group 'tree-sitter-hl-faces)
-
-  (defun hook/tree-sitter-common ()
-    (unless font-lock-defaults
-      (setq font-lock-defaults '(nil)))
-    (setq tree-sitter-hl-use-font-lock-keywords nil)
-    (tree-sitter-mode +1)
-    (tree-sitter-hl-mode +1))
-
-  (defun hook/elixir-tree-sitter ()
-    (setq
-    tree-sitter-hl-default-patterns
-    (read
-      (concat
-      "["
-      (s-replace "#match?" ".match?"
-                 (f-read-text (expand-file-name "~/ananthakumaran/tree-sitter-elixir/queries/highlights.scm")))
-      "]")))
-    (hook/tree-sitter-common))
-
-  (use-package tree-sitter
-    :ensure t
-    :hook ((elixir-mode . hook/elixir-tree-sitter))
-    :custom-face
-    (tree-sitter-hl-face:operator ((t)))
-    (tree-sitter-hl-face:variable ((t)))
-    (tree-sitter-hl-face:function.method.call ((t)))
-    (tree-sitter-hl-face:property ((t)))
-    :config
-    (setq tree-sitter-debug-highlight-jump-region t)
-    (setq tree-sitter-debug-jump-buttons t))
-
-  (use-package tree-sitter-langs
-    :ensure t
-    :after tree-sitter
-    :config
-    (add-to-list 'tree-sitter-major-mode-language-alist '(gleam-mode . gleam)))
-
-  (use-package gleam-mode
-    :load-path "~/experiments/gleam-mode")
 
   ;; from https://www.reddit.com/r/emacs/comments/4ykg7s/creating_and_using_bookmarks/
   (setq helm-bookmark-show-location t)

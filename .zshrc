@@ -1,3 +1,7 @@
+# direnv config https://direnv.net/docs/hook.html
+# It prints the loaded env variables, so it *needs* to stay above p10k-instant-prompt
+eval "$(direnv hook zsh)"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -121,9 +125,6 @@ alias e="emacsclient"
 alias rpk="docker exec -ti redpanda-1 rpk"
 alias mux="tmuxinator"
 alias b="cd ~/bluecodecom"
-
-# direnv config https://direnv.net/docs/hook.html
-eval "$(direnv hook zsh)"
 
 # make time output more like in bash
 # https://unix.stackexchange.com/questions/562650/time-command-is-different-in-zsh-than-in-bash
